@@ -1,1 +1,1 @@
-# StudentProject
+# MyProject
