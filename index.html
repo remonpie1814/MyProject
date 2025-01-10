@@ -3,20 +3,23 @@
   <head>
     <title>three.js webgl - Enhanced GUI</title>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
     <style>
-      html, body {
+      html,
+      body {
         margin: 0;
         padding: 0;
         overflow: hidden; /* 스크롤 방지 */
         width: 100vw;
         height: 100vh;
       }
-    
+
       canvas {
         display: block; /* 캔버스가 여백 없이 렌더링되도록 설정 */
       }
-
 
       .lil-gui {
         /* position: fixed; 화면에 고정 */
@@ -57,7 +60,7 @@
     </style>
   </head>
   <body>
-
+    <script src="https://"></script>
     <!-- 
     <div id="info">
       <a href="https://threejs.org" target="_blank" rel="noopener">three.js</a>
@@ -78,8 +81,16 @@
 
       let camera, scene, renderer, model, pivot, axesHelper, controls;
       let dirLight;
-      let positionFolder, rotationFolder, cameraFolder, lightFolder, pivotFolder;
-      let positionParams, rotationParams, cameraParams, lightParams, pivotParams;
+      let positionFolder,
+        rotationFolder,
+        cameraFolder,
+        lightFolder,
+        pivotFolder;
+      let positionParams,
+        rotationParams,
+        cameraParams,
+        lightParams,
+        pivotParams;
       let positionXCtrl, positionYCtrl, positionZCtrl;
       let rotationXCtrl, rotationYCtrl, rotationZCtrl;
       let fovCtrl, zoomCtrl;
@@ -101,7 +112,12 @@
         document.body.appendChild(container);
 
         // 카메라 설정
-        camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 2000);
+        camera = new THREE.PerspectiveCamera(
+          45,
+          window.innerWidth / window.innerHeight,
+          1,
+          2000
+        );
         camera.position.set(0, 200, 400);
 
         // 씬 설정
@@ -148,17 +164,19 @@
         // OBJ 로더
         const loader = new OBJLoader();
         loader.load(
-          "./model.obj",
+          "/assets/model.obj",
           function (obj) {
             pivot = new THREE.Object3D();
             scene.add(pivot);
-            
+
             model = obj;
             model.traverse(function (child) {
               if (child.isMesh) {
                 child.castShadow = true;
                 child.receiveShadow = true;
-                child.material = new THREE.MeshPhongMaterial({ color: 0x999999 });
+                child.material = new THREE.MeshPhongMaterial({
+                  color: 0x999999,
+                });
               }
             });
 
@@ -189,7 +207,9 @@
 
             // 윤곽선 생성 및 모델의 자식으로 추가
             const edges = new THREE.EdgesGeometry(cubeGeometry);
-            const edgesMaterial = new THREE.LineBasicMaterial({ color: 0xffffff });
+            const edgesMaterial = new THREE.LineBasicMaterial({
+              color: 0xffffff,
+            });
             cubeEdges = new THREE.LineSegments(edges, edgesMaterial);
             cubeEdges.position.copy(bellyOffset);
             model.add(cubeEdges);
@@ -218,14 +238,21 @@
         controls.update();
 
         window.addEventListener("resize", onWindowResize, false);
-        document.getElementById("resetPosition").addEventListener("click", resetPosition);
-        document.getElementById("resetRotation").addEventListener("click", resetRotation);
-        document.getElementById("resetCamera").addEventListener("click", resetCamera);
-        document.getElementById("resetLight").addEventListener("click", resetLight);
-        document.getElementById("resetPivot").addEventListener("click", resetPivot);
-
-
-        
+        document
+          .getElementById("resetPosition")
+          .addEventListener("click", resetPosition);
+        document
+          .getElementById("resetRotation")
+          .addEventListener("click", resetRotation);
+        document
+          .getElementById("resetCamera")
+          .addEventListener("click", resetCamera);
+        document
+          .getElementById("resetLight")
+          .addEventListener("click", resetLight);
+        document
+          .getElementById("resetPivot")
+          .addEventListener("click", resetPivot);
 
         // 마우스 드래그 이벤트 업데이트
         window.addEventListener("mousedown", (event) => {
@@ -247,13 +274,15 @@
           }
         });
 
-
         // 드래그 동작 업데이트 (모델 기준)
         window.addEventListener("mousemove", (event) => {
           if (!isDragging || !dragPlane) return;
 
           raycaster.setFromCamera(mouse, camera);
-          const intersect = raycaster.ray.intersectPlane(dragPlane, new THREE.Vector3());
+          const intersect = raycaster.ray.intersectPlane(
+            dragPlane,
+            new THREE.Vector3()
+          );
 
           if (intersect) {
             const offset = intersect.clone().sub(dragStart);
@@ -274,53 +303,66 @@
           }
         });
 
-
-
         animate();
       }
 
       // 링
       function addRotationRings() {
-      const ringRadius = 30;
-      const ringThickness = 1.5;
-      const ringOpacity = 0.4;
+        const ringRadius = 30;
+        const ringThickness = 1.5;
+        const ringOpacity = 0.4;
 
-      // X축 링 (빨간색)
-      const xGeometry = new THREE.TorusGeometry(ringRadius, ringThickness, 16, 100);
-      const xMaterial = new THREE.MeshStandardMaterial({
-        color: 0xff0000,
-        transparent: true,
-        opacity: ringOpacity, // 투명도를 40%로 설정
-      });
-      xRing = new THREE.Mesh(xGeometry, xMaterial);
-      xRing.rotation.y = Math.PI / 2;
-      xRing.visible = false; // 초기 상태에서 숨김
-      pivot.add(xRing);
+        // X축 링 (빨간색)
+        const xGeometry = new THREE.TorusGeometry(
+          ringRadius,
+          ringThickness,
+          16,
+          100
+        );
+        const xMaterial = new THREE.MeshStandardMaterial({
+          color: 0xff0000,
+          transparent: true,
+          opacity: ringOpacity, // 투명도를 40%로 설정
+        });
+        xRing = new THREE.Mesh(xGeometry, xMaterial);
+        xRing.rotation.y = Math.PI / 2;
+        xRing.visible = false; // 초기 상태에서 숨김
+        pivot.add(xRing);
 
-      // Y축 링 (초록색)
-      const yGeometry = new THREE.TorusGeometry(ringRadius, ringThickness, 16, 100);
-      const yMaterial = new THREE.MeshStandardMaterial({
-        color: 0x00ff00,
-        transparent: true,
-        opacity: ringOpacity, // 투명도를 40%로 설정
-      });
-      yRing = new THREE.Mesh(yGeometry, yMaterial);
-      yRing.rotation.z = Math.PI / 2;
-      yRing.visible = false; // 초기 상태에서 숨김
-      pivot.add(yRing);
+        // Y축 링 (초록색)
+        const yGeometry = new THREE.TorusGeometry(
+          ringRadius,
+          ringThickness,
+          16,
+          100
+        );
+        const yMaterial = new THREE.MeshStandardMaterial({
+          color: 0x00ff00,
+          transparent: true,
+          opacity: ringOpacity, // 투명도를 40%로 설정
+        });
+        yRing = new THREE.Mesh(yGeometry, yMaterial);
+        yRing.rotation.z = Math.PI / 2;
+        yRing.visible = false; // 초기 상태에서 숨김
+        pivot.add(yRing);
 
-      // Z축 링 (파란색)
-      const zGeometry = new THREE.TorusGeometry(ringRadius, ringThickness, 16, 100);
-      const zMaterial = new THREE.MeshStandardMaterial({
-        color: 0x0000ff,
-        transparent: true,
-        opacity: ringOpacity, // 투명도를 40%로 설정
-      });
-      zRing = new THREE.Mesh(zGeometry, zMaterial);
-      zRing.rotation.x = Math.PI / 2;
-      zRing.visible = false; // 초기 상태에서 숨김
-      pivot.add(zRing);
-    }
+        // Z축 링 (파란색)
+        const zGeometry = new THREE.TorusGeometry(
+          ringRadius,
+          ringThickness,
+          16,
+          100
+        );
+        const zMaterial = new THREE.MeshStandardMaterial({
+          color: 0x0000ff,
+          transparent: true,
+          opacity: ringOpacity, // 투명도를 40%로 설정
+        });
+        zRing = new THREE.Mesh(zGeometry, zMaterial);
+        zRing.rotation.x = Math.PI / 2;
+        zRing.visible = false; // 초기 상태에서 숨김
+        pivot.add(zRing);
+      }
 
       // 축 시각화
       function addModelAxes() {
@@ -356,14 +398,12 @@
         pivot.add(yAxis);
         pivot.add(zAxis);
       }
-      
+
       function onWindowResize() {
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
         renderer.setSize(window.innerWidth, window.innerHeight);
       }
-
-
 
       const raycaster = new THREE.Raycaster();
       const mouse = new THREE.Vector2();
@@ -374,7 +414,7 @@
         mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
       }
 
-      window.addEventListener('mousemove', onMouseMove);
+      window.addEventListener("mousemove", onMouseMove);
 
       // 마우스 호버 효과
       function checkIntersection() {
@@ -399,7 +439,6 @@
         }
       }
 
-      
       function animate() {
         requestAnimationFrame(animate);
 
@@ -410,7 +449,7 @@
           cubeMesh.position.copy(correctedPosition);
           cubeEdges.position.copy(correctedPosition);
         }
-        
+
         // 마우스 위치 업데이트
         raycaster.setFromCamera(mouse, camera);
 
@@ -419,7 +458,6 @@
         renderer.render(scene, camera);
       }
 
-      
       function hsvToRgb(h, s, v) {
         let r, g, b;
 
@@ -462,10 +500,12 @@
             break;
         }
 
-        return { r: Math.max(0, Math.min(1, r)), g: Math.max(0, Math.min(1, g)), b: Math.max(0, Math.min(1, b)) };
+        return {
+          r: Math.max(0, Math.min(1, r)),
+          g: Math.max(0, Math.min(1, g)),
+          b: Math.max(0, Math.min(1, b)),
+        };
       }
-
-
 
       // 위치 초기화 (모델 기준)
       function resetPosition() {
@@ -488,7 +528,6 @@
           rotationZCtrl.setValue(0);
         }
       }
-
 
       // 카메라 초기화
       function resetCamera() {
@@ -531,7 +570,6 @@
         rotationZCtrl.setValue(0);
       }
 
-      
       let isPivotEnabled = false; // 피벗 조작 활성화 여부
 
       function setupGUI() {
@@ -539,105 +577,112 @@
 
         // 피벗 조작 락 활성화 여부를 제어하는 GUI
         const pivotToggleParams = { EnablePivotControl: false };
-          gui.add(pivotToggleParams, "EnablePivotControl")
-            .name("Enable Pivot Control")
+        gui
+          .add(pivotToggleParams, "EnablePivotControl")
+          .name("Enable Pivot Control")
+          .onChange((value) => {
+            isPivotEnabled = value;
+            const pointerEvents = isPivotEnabled ? "none" : "auto";
+            const opacity = isPivotEnabled ? "0.5" : "1";
+
+            positionFolder.domElement.style.pointerEvents = pointerEvents;
+            positionFolder.domElement.style.opacity = opacity;
+
+            rotationFolder.domElement.style.pointerEvents = pointerEvents;
+            rotationFolder.domElement.style.opacity = opacity;
+
+            pivotFolder.domElement.style.pointerEvents = isPivotEnabled
+              ? "auto"
+              : "none";
+            pivotFolder.domElement.style.opacity = isPivotEnabled ? "1" : "0.5";
+
+            // 피벗 조작을 종료할 때 Y축 위치 저장
+            if (!value) {
+              savedPivotY = pivot.position.y; // 현재 피벗의 Y축 값을 저장
+            }
+          });
+
+        // === 정육면체 가시성 제어 체크박스 추가 ===
+        const cubeVisibilityParams = { ShowCube: true };
+        gui
+          .add(cubeVisibilityParams, "ShowCube")
+          .name("Show Cube")
+          .onChange((value) => {
+            if (cubeMesh) cubeMesh.visible = value; // 면 표시/숨기기
+            if (cubeEdges) cubeEdges.visible = value; // 윤곽선 표시/숨기기
+          });
+
+        // 위치 조작 컨트롤
+        positionFolder = gui.addFolder("Position Controls");
+        positionParams = {
+          positionX: pivot.position.x,
+          positionY: pivot.position.y,
+          positionZ: pivot.position.z,
+        };
+
+        // 위치 동기화 (모델 기준)
+        ["positionX", "positionY", "positionZ"].forEach((axis) => {
+          positionFolder
+            .add(positionParams, axis, -150, 150)
             .onChange((value) => {
-              isPivotEnabled = value;
-              const pointerEvents = isPivotEnabled ? "none" : "auto";
-              const opacity = isPivotEnabled ? "0.5" : "1";
-
-              positionFolder.domElement.style.pointerEvents = pointerEvents;
-              positionFolder.domElement.style.opacity = opacity;
-
-              rotationFolder.domElement.style.pointerEvents = pointerEvents;
-              rotationFolder.domElement.style.opacity = opacity;
-
-              pivotFolder.domElement.style.pointerEvents = isPivotEnabled ? "auto" : "none";
-              pivotFolder.domElement.style.opacity = isPivotEnabled ? "1" : "0.5";
-
-              // 피벗 조작을 종료할 때 Y축 위치 저장
-              if (!value) {
-                savedPivotY = pivot.position.y; // 현재 피벗의 Y축 값을 저장
-              }
-            });
-
-            // === 정육면체 가시성 제어 체크박스 추가 ===
-            const cubeVisibilityParams = { ShowCube: true };
-            gui.add(cubeVisibilityParams, "ShowCube")
-              .name("Show Cube")
-              .onChange((value) => {
-                if (cubeMesh) cubeMesh.visible = value; // 면 표시/숨기기
-                if (cubeEdges) cubeEdges.visible = value; // 윤곽선 표시/숨기기
-              });
-
-          // 위치 조작 컨트롤
-          positionFolder = gui.addFolder("Position Controls");
-          positionParams = {
-            positionX: pivot.position.x,
-            positionY: pivot.position.y,
-            positionZ: pivot.position.z,
-          };
-
-          // 위치 동기화 (모델 기준)
-          ["positionX", "positionY", "positionZ"].forEach((axis) => {
-            positionFolder.add(positionParams, axis, -150, 150).onChange((value) => {
-              model.position[axis.charAt(axis.length - 1).toLowerCase()] = value;
+              model.position[axis.charAt(axis.length - 1).toLowerCase()] =
+                value;
               syncCubePosition();
             });
+        });
+
+        // 상자와 모델 위치 동기화 함수
+        function syncCubePosition() {
+          const bellyOffset = new THREE.Vector3(0, 130, 0); // 상자 위치 기준 오프셋
+          const correctedPosition = model.position.clone().add(bellyOffset);
+          cubeMesh.position.copy(correctedPosition); // 상자 위치 동기화
+          cubeEdges.position.copy(correctedPosition); // 윤곽선 동기화
+        }
+
+        // 새 체크박스 추가: 저장된 Y값 사용 여부
+        const savedYParams = { UseSavedY: true };
+        positionFolder
+          .add(savedYParams, "UseSavedY")
+          .name("Use Saved Y for Reset")
+          .onChange((value) => {
+            useSavedYForReset = value; // 체크박스 상태 저장
           });
-          
-          // 상자와 모델 위치 동기화 함수
-          function syncCubePosition() {
-            const bellyOffset = new THREE.Vector3(0, 130, 0); // 상자 위치 기준 오프셋
-            const correctedPosition = model.position.clone().add(bellyOffset);
-            cubeMesh.position.copy(correctedPosition); // 상자 위치 동기화
-            cubeEdges.position.copy(correctedPosition); // 윤곽선 동기화
+
+        // "발을 땅에 붙이기" 버튼 추가
+        const attachToGroundController = positionFolder
+          .add({ AttachToGround: () => attachToGround() }, "AttachToGround")
+          .name("발을 땅에 붙이기");
+
+        // 버튼 스타일 수정
+        setTimeout(() => {
+          const buttonElement =
+            attachToGroundController.domElement.querySelector("button");
+          if (buttonElement) {
+            buttonElement.style.width = "100px"; // 버튼 너비 설정
           }
+        }, 0); // lil-gui가 DOM에 버튼을 추가한 후 실행
 
+        // 발을 땅에 붙이기 함수
+        function attachToGround() {
+          if (!model) return;
 
-          // 새 체크박스 추가: 저장된 Y값 사용 여부
-          const savedYParams = { UseSavedY: true };
-          positionFolder.add(savedYParams, "UseSavedY")
-            .name("Use Saved Y for Reset")
-            .onChange((value) => {
-              useSavedYForReset = value; // 체크박스 상태 저장
-            });
+          // 모델의 bounding box 계산
+          const boundingBox = new THREE.Box3().setFromObject(model);
+          const minY = boundingBox.min.y;
 
-          // "발을 땅에 붙이기" 버튼 추가
-          const attachToGroundController = positionFolder.add({ AttachToGround: () => attachToGround() }, "AttachToGround").name("발을 땅에 붙이기");
+          // 모델 위치 조정
+          pivot.position.y -= minY; // 모델 발이 땅에 닿도록 이동
 
-          // 버튼 스타일 수정
-          setTimeout(() => {
-            const buttonElement = attachToGroundController.domElement.querySelector("button");
-            if (buttonElement) {
-              buttonElement.style.width = "100px"; // 버튼 너비 설정
-            }
-          }, 0); // lil-gui가 DOM에 버튼을 추가한 후 실행
+          // 정육면체를 모델의 배꼽 위치에 고정
+          const cubeYOffset = 130; // 배꼽 위치를 기준으로 Y축 오프셋
+          cubeMesh.position.set(0, pivot.position.y + cubeYOffset, 0);
+          cubeEdges.position.set(0, pivot.position.y + cubeYOffset, 0);
 
-
-          // 발을 땅에 붙이기 함수
-          function attachToGround() {
-            if (!model) return;
-
-            // 모델의 bounding box 계산
-            const boundingBox = new THREE.Box3().setFromObject(model);
-            const minY = boundingBox.min.y;
-
-            // 모델 위치 조정
-            pivot.position.y -= minY; // 모델 발이 땅에 닿도록 이동
-
-            // 정육면체를 모델의 배꼽 위치에 고정
-            const cubeYOffset = 130; // 배꼽 위치를 기준으로 Y축 오프셋
-            cubeMesh.position.set(0, pivot.position.y + cubeYOffset, 0);
-            cubeEdges.position.set(0, pivot.position.y + cubeYOffset, 0);
-
-            // GUI 컨트롤 업데이트
-            if (positionYCtrl) {
-              positionYCtrl.setValue(pivot.position.y);
-            }
+          // GUI 컨트롤 업데이트
+          if (positionYCtrl) {
+            positionYCtrl.setValue(pivot.position.y);
           }
-        
-
+        }
 
         // 회전 조작
         rotationFolder = gui.addFolder("Rotation Controls");
@@ -649,12 +694,12 @@
 
         // 회전 로직
         ["rotationX", "rotationY", "rotationZ"].forEach((axis, index) => {
-          rotationFolder.add(rotationParams, axis, -180, 180).onChange((value) => {
-            pivot.rotation[["x", "y", "z"][index]] = (value * Math.PI) / 180; // 라디안으로 변환
-          });
+          rotationFolder
+            .add(rotationParams, axis, -180, 180)
+            .onChange((value) => {
+              pivot.rotation[["x", "y", "z"][index]] = (value * Math.PI) / 180; // 라디안으로 변환
+            });
         });
-
-
 
         /* 
         
@@ -673,14 +718,18 @@
           zoom: camera.zoom,
         };
 
-        fovCtrl = cameraFolder.add(cameraParams, "fov", 10, 100).onChange((value) => {
-          camera.fov = value;
-          camera.updateProjectionMatrix();
-        });
-        zoomCtrl = cameraFolder.add(cameraParams, "zoom", 0.1, 5).onChange((value) => {
-          camera.zoom = value;
-          camera.updateProjectionMatrix();
-        });
+        fovCtrl = cameraFolder
+          .add(cameraParams, "fov", 10, 100)
+          .onChange((value) => {
+            camera.fov = value;
+            camera.updateProjectionMatrix();
+          });
+        zoomCtrl = cameraFolder
+          .add(cameraParams, "zoom", 0.1, 5)
+          .onChange((value) => {
+            camera.zoom = value;
+            camera.updateProjectionMatrix();
+          });
 
         // 조명 조작
         lightFolder = gui.addFolder("Light Controls");
@@ -690,15 +739,21 @@
           lightZ: dirLight.position.z,
         };
 
-        lightXCtrl = lightFolder.add(lightParams, "lightX", -500, 500).onChange((value) => {
-          dirLight.position.x = value;
-        });
-        lightYCtrl = lightFolder.add(lightParams, "lightY", 0, 500).onChange((value) => {
-          dirLight.position.y = value;
-        });
-        lightZCtrl = lightFolder.add(lightParams, "lightZ", -500, 500).onChange((value) => {
-          dirLight.position.z = value;
-        });
+        lightXCtrl = lightFolder
+          .add(lightParams, "lightX", -500, 500)
+          .onChange((value) => {
+            dirLight.position.x = value;
+          });
+        lightYCtrl = lightFolder
+          .add(lightParams, "lightY", 0, 500)
+          .onChange((value) => {
+            dirLight.position.y = value;
+          });
+        lightZCtrl = lightFolder
+          .add(lightParams, "lightZ", -500, 500)
+          .onChange((value) => {
+            dirLight.position.z = value;
+          });
 
         // 피벗 조작
         pivotFolder = gui.addFolder("Pivot Controls");
@@ -708,37 +763,49 @@
           pivotZ: pivot.position.z,
         };
 
-        pivotXCtrl = pivotFolder.add(pivotParams, "pivotX", -500, 500).onChange((value) => {
-          if (!isPivotEnabled) return; // 피벗 조작 비활성화 시 동작 중단
-          const delta = value - pivot.position.x;
-          pivot.position.x = value;
+        pivotXCtrl = pivotFolder
+          .add(pivotParams, "pivotX", -500, 500)
+          .onChange((value) => {
+            if (!isPivotEnabled) return; // 피벗 조작 비활성화 시 동작 중단
+            const delta = value - pivot.position.x;
+            pivot.position.x = value;
 
-          const worldDelta = new THREE.Vector3(delta, 0, 0).applyQuaternion(pivot.quaternion);
-          model.position.sub(worldDelta);
-        });
+            const worldDelta = new THREE.Vector3(delta, 0, 0).applyQuaternion(
+              pivot.quaternion
+            );
+            model.position.sub(worldDelta);
+          });
 
-        pivotYCtrl = pivotFolder.add(pivotParams, "pivotY", -500, 500).onChange((value) => {
-          if (!isPivotEnabled) return;
-          const delta = value - pivot.position.y;
-          pivot.position.y = value;
+        pivotYCtrl = pivotFolder
+          .add(pivotParams, "pivotY", -500, 500)
+          .onChange((value) => {
+            if (!isPivotEnabled) return;
+            const delta = value - pivot.position.y;
+            pivot.position.y = value;
 
-          const worldDelta = new THREE.Vector3(0, delta, 0).applyQuaternion(pivot.quaternion);
-          model.position.sub(worldDelta);
-        });
+            const worldDelta = new THREE.Vector3(0, delta, 0).applyQuaternion(
+              pivot.quaternion
+            );
+            model.position.sub(worldDelta);
+          });
 
-        pivotZCtrl = pivotFolder.add(pivotParams, "pivotZ", -500, 500).onChange((value) => {
-          if (!isPivotEnabled) return;
-          const delta = value - pivot.position.z;
-          pivot.position.z = value;
+        pivotZCtrl = pivotFolder
+          .add(pivotParams, "pivotZ", -500, 500)
+          .onChange((value) => {
+            if (!isPivotEnabled) return;
+            const delta = value - pivot.position.z;
+            pivot.position.z = value;
 
-          const worldDelta = new THREE.Vector3(0, 0, delta).applyQuaternion(pivot.quaternion);
-          model.position.sub(worldDelta);
-        });
+            const worldDelta = new THREE.Vector3(0, 0, delta).applyQuaternion(
+              pivot.quaternion
+            );
+            model.position.sub(worldDelta);
+          });
 
-         // 초기 상태에서 피벗 컨트롤 비활성화
+        // 초기 상태에서 피벗 컨트롤 비활성화
         pivotFolder.domElement.style.pointerEvents = "none";
         pivotFolder.domElement.style.opacity = "0.5";
-        
+
         function syncCubePosition() {
           if (!cubeMesh || !cubeEdges) return;
 
@@ -749,9 +816,9 @@
           cubeMesh.position.copy(worldOffset); // 상자의 월드 좌표로 위치 고정
           cubeEdges.position.copy(worldOffset); // 윤곽선도 동일하게 적용
         }
-        
+
         // === 새 코드 ===
-        
+
         // Pivot Lock 상태 관리 변수 추가
         let isPivotLocked = true;
         let pivotLockChanged = false; // 초기 상태에서 메시지 표시 방지
@@ -781,7 +848,8 @@
         }
 
         // GUI 설정에서 Pivot Lock 추가
-        pivotFolder.add({ Unlock: false }, "Unlock")
+        pivotFolder
+          .add({ Unlock: false }, "Unlock")
           .name("Unlock Pivot Controls")
           .onChange((value) => {
             pivotLockChanged = true; // 사용자가 최초로 상태를 변경한 이후 메시지 표시
@@ -790,7 +858,6 @@
 
         // 초기 상태에서 Pivot Lock 설정
         updatePivotLock(true); // 초기에는 메시지 표시하지 않음
-
 
         // 새로운 "Visualization Controls" 폴더 추가
         const visualizationFolder = gui.addFolder("Visualization Controls");
@@ -821,8 +888,7 @@
             });
           });
 
-
-          function setupColorControls(gui) {
+        function setupColorControls(gui) {
           const colorFolder = gui.addFolder("Color Controls");
 
           const colorParams = {
@@ -832,11 +898,15 @@
           };
 
           function updateModelColor() {
-            const { r, g, b } = hsvToRgb(colorParams.hue, colorParams.saturation, colorParams.value);
+            const { r, g, b } = hsvToRgb(
+              colorParams.hue,
+              colorParams.saturation,
+              colorParams.value
+            );
             const newColor = new THREE.Color(r, g, b);
 
             model.traverse((child) => {
-              if (child.isMesh && child.material && 'color' in child.material) {
+              if (child.isMesh && child.material && "color" in child.material) {
                 child.material.color.set(newColor); // set 메서드로 안전하게 설정
                 child.material.needsUpdate = true; // 강제 갱신
               }
@@ -872,9 +942,8 @@
         cameraFolder.open();
         lightFolder.open();
         pivotFolder.open();
-        visualizationFolder.open(); 
+        visualizationFolder.open();
         colorFolder.open();
-
       }
 
       init();
