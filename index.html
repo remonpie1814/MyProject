@@ -60,7 +60,6 @@
     </style>
   </head>
   <body>
-    <script src="https://"></script>
     <!-- 
     <div id="info">
       <a href="https://threejs.org" target="_blank" rel="noopener">three.js</a>
@@ -164,7 +163,7 @@
         // OBJ 로더
         const loader = new OBJLoader();
         loader.load(
-          "/assets/model.obj",
+          "https://remonpie1814.github.io/MyProject/assets/model.obj",
           function (obj) {
             pivot = new THREE.Object3D();
             scene.add(pivot);
